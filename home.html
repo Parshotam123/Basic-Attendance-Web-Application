@@ -4,16 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Attendance App</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
 
-    <input type="text" id="input" placeholder="Enter roll number">
-    <button id="add">Add</button>
+    <div class="container">
+        <h1>Attendance System</h1>
+
+        <input type="text" placeholder="Enter Name" id="input-name">
+        <input type="text" placeholder="Enter Roll Number" id="input-roll">
+
+        <div class="btns">
+            <button id="btn-present">Present</button>
+            <button id="btn-absent">Absent</button>
+        </div>
+    </div>
+
+    <h2>Present Students</h2>
+    <table id="present-table">
+        <tr>
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Date</th>
+        </tr>
+    </table>
+
+    <h2>Absent Students</h2>
+    <table id="absent-table">
+        <tr>
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Date</th>
+        </tr>
+    </table>
 
     <script src="home.js"></script>
+
 </body>
 
 </html>
