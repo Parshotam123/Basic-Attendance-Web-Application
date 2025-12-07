@@ -1,4 +1,4 @@
-const email = "admin@gmail.com";
+const email = "example@gmail.com";
 const password = "1234";
 
 document.getElementById("formLogin").addEventListener("submit", function (e) {

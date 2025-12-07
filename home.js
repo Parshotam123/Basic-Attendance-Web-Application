@@ -8,63 +8,65 @@ let presentTable = document.getElementById("present-table");
 let absentTable = document.getElementById("absent-table");
 
 function getDate() {
-    let d = new Date();
-    return d.toLocaleString();
+    const now = new Date();
+    return now.toLocaleString();
 }
 
-function showAlert(name, roll, status) {
-    Swal.fire({
-        title: status + " Marked",
-        html: `
-            <strong>Name:</strong> ${name}<br>
-            <strong>Roll:</strong> ${roll}<br>
-            <strong>Status:</strong> ${status}<br>
-            <strong>Date:</strong> ${getDate()}
-        `,
-        icon: "success",
-        confirmButtonText: "OK"
-    });
+function rowExists(table, name, roll) {
+    const rows = table.getElementsByTagName("tr");
+    for (let i = 1; i < rows.length; i++) {
+        const cols = rows[i].getElementsByTagName("td");
+        const existingName = cols[0].innerText.trim();
+        const existingRoll = cols[1].innerText.trim();
+        if (existingName === name && existingRoll === roll) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function addRow(table, name, roll) {
-    let row = `
-        <tr>
-            <td>${name}</td>
-            <td>${roll}</td>
-            <td>${getDate()}</td>
-        </tr>
-    `;
-    table.innerHTML += row;
+    const date = getDate();
+    const tr = document.createElement("tr");
+
+    const tdName = document.createElement("td");
+    tdName.innerText = name;
+    tr.appendChild(tdName);
+
+    const tdRoll = document.createElement("td");
+    tdRoll.innerText = roll;
+    tr.appendChild(tdRoll);
+
+    const tdDate = document.createElement("td");
+    tdDate.innerText = date;
+    tr.appendChild(tdDate);
+
+    table.appendChild(tr);
 }
 
-// PRESENT BUTTON
-presentBtn.addEventListener("click", function () {
-    let name = inputName.value;
-    let roll = inputRoll.value;
-
+function handleMark(table, status) {
+    const name = inputName.value.trim();
+    const roll = inputRoll.value.trim();
     if (!name || !roll) {
-        Swal.fire("Error", "Please enter name and roll number", "error");
+        alert("Please enter both Name and Roll number.");
         return;
     }
 
-    showAlert(name, roll, "Present");
-    addRow(presentTable, name, roll);
-    inputName.value = '';
-    inputRoll.value = '';
+    if (rowExists(table, name, roll)) {
+        alert(`${status} already marked for ${name} (Roll: ${roll}).`);
+        return;
+    }
+
+    addRow(table, name, roll);
+
+    inputName.value = "";
+    inputRoll.value = "";
+}
+
+presentBtn.addEventListener("click", function () {
+    handleMark(presentTable, "Present");
 });
 
-// ABSENT BUTTON
 absentBtn.addEventListener("click", function () {
-    let name = inputName.value;
-    let roll = inputRoll.value;
-
-    if (!name || !roll) {
-        Swal.fire("Error", "Please enter name and roll number", "error");
-        return;
-    }
-
-    showAlert(name, roll, "Absent");
-    addRow(absentTable, name, roll);
-    input.value = '';
-    inputRoll.value = '';
+    handleMark(absentTable, "Absent");
 });
